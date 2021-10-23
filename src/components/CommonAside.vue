@@ -10,24 +10,22 @@
       :index="item.path"
       v-for="item in noChildren"
       :key="item.path"
+      @click="clickMenu(item)"
     >
       <i :class="'el-icon-' + item.icon"></i>
       <span slot="title">{{ item.lable }}</span>
     </el-menu-item>
-    <el-submenu
-    :index="item.path"
-      v-for="item in hasChildren"  
-      :key="item.path"
-    >
+    <el-submenu :index="item.path" v-for="item in hasChildren" :key="item.path">
       <template slot="title">
-        <i :class="'el-icon-'+item.icon"></i>
+        <i :class="'el-icon-' + item.icon"></i>
         <span>{{ item.lable }}</span>
       </template>
       <el-menu-item-group>
         <el-menu-item
           :index="subItem.path"
-          v-for=" subItem in item.children"
+          v-for="subItem in item.children"
           :key="subItem.path"
+          @click="clickMenu(subItem)"
           >{{ subItem.lable }}</el-menu-item
         >
       </el-menu-item-group>
@@ -40,32 +38,34 @@ export default {
   data() {
     return {
       asidemenu: [
-        { path: "/",
-         lable: "首页", 
-         icon: "home" 
-        },
+        { path: "/", name: "home", lable: "首页", icon: "home" },
         {
           path: "/video",
+          name: "video",
           lable: "视频管理",
           icon: "video-play",
         },
         {
           path: "/user",
+          name: "user",
           lable: "用户管理",
           icon: "user",
         },
         {
           path: "/other",
+          name: "other",
           lable: "其它",
           icon: "more",
           children: [
             {
               path: "/page1",
+              name: "page1",
               lable: "其它页面",
               icon: "setting",
             },
             {
               path: "/page2",
+              name: "page2",
               lable: "其它页面2",
               icon: "setting",
             },
@@ -76,12 +76,17 @@ export default {
   },
   computed: {
     noChildren() {
-     // console.log(this.asidemenu.filter((item) => !item.children))
+      // console.log(this.asidemenu.filter((item) => !item.children))
       return this.asidemenu.filter((item) => !item.children);
     },
     hasChildren() {
-     console.log(this.asidemenu.filter((item) =>item.children))
-      return this.asidemenu.filter((item) =>item.children);
+      console.log(this.asidemenu.filter((item) => item.children));
+      return this.asidemenu.filter((item) => item.children);
+    },
+  },
+  methods: {
+    clickMenu(item) {
+      this.$store.commit("selectMenu", item);
     },
   },
 };
