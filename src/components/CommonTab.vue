@@ -1,13 +1,49 @@
 <template>
-  
+  <div class="tabs">
+    <el-tag
+      :key="tag.name"
+      size="small"
+      v-for="tag in tags"
+      :closable="tag.name!=='home'" 
+      :disable-transitions="false"
+      @close="handleClose(tag)"
+    >
+      {{ tag.lable }}
+    </el-tag>
+  </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 export default {
-
-}
+  data() {
+    return {
+      dynamicTags: ["标签一", "标签二", "标签三"],
+      inputVisible: false,
+      inputValue: "",
+    };
+  },
+  methods: {
+    ...mapMutations({
+      close:'closeTab',
+    }),
+    handleClose(tag) {
+      this.close(tag)
+    }
+  },
+  computed: {
+    ...mapState({
+      tags: (state) => state.tab.tabList,
+    }),
+  },
+};
 </script>
 
-<style>
-
+<style lang="scss">
+.tabs {
+  padding: 15px;
+  .el-tag {
+    margin-right: 15px;
+  }
+}
 </style>
