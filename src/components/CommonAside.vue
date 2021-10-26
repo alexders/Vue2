@@ -2,9 +2,10 @@
   <el-menu
     default-active="2"
     class="el-menu-vertical-demo"
-    background-color="#33aef0"
+    background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
+    :collapse="isCollaps"
   >
     <el-menu-item
       :index="item.path"
@@ -38,7 +39,11 @@ export default {
   data() {
     return {
       asidemenu: [
-        { path: "/", name: "home", lable: "首页", icon: "home" },
+        { 
+          path: "/", 
+          name: "home", 
+          lable: "首页", 
+          icon: "s-home" },
         {
           path: "/video",
           name: "video",
@@ -83,6 +88,9 @@ export default {
       console.log(this.asidemenu.filter((item) => item.children));
       return this.asidemenu.filter((item) => item.children);
     },
+    isCollaps(){
+      return this.$store.state.tab.isCollaps;
+    }
   },
   methods: {
     clickMenu(item) {
@@ -99,4 +107,8 @@ export default {
   height: 100%;
   border: none;
 }
+ .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
 </style>

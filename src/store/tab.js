@@ -1,5 +1,6 @@
 module.exports = {
     state: {
+        isCollaps:false,
         menu: [
 
         ], //全部菜单
@@ -26,6 +27,9 @@ module.exports = {
         closeTab(state, val) {
             let result = state.tabList.findIndex(item => item.name == val.name)
             state.tabList.splice(result, 1);
+        },
+        collapsMenu(state){
+            state.isCollaps= !state.isCollaps;
         }
     },
     actions: {},
