@@ -4,24 +4,24 @@
     <el-container>
       <el-header><common-header></common-header></el-header>
       <common-tab></common-tab>
-      <el-mian>Main</el-mian>
+      <el-mian>
+        <router-view></router-view>
+      </el-mian>
     </el-container>
   </el-container>
 </template>
 
 <script>
-import  CommonHeader  from "../components/CommonHeader.vue";
-import  CommonAside  from "../components/CommonAside.vue";
-import  CommonTab  from '../components/CommonTab.vue'
+import CommonHeader from "../components/CommonHeader.vue";
+import CommonAside from "../components/CommonAside.vue";
+import CommonTab from "../components/CommonTab.vue";
 export default {
-  components: { CommonHeader, CommonAside,CommonTab },
-
+  components: { CommonHeader, CommonAside, CommonTab },
 };
 </script>
     
 <style lang="scss">
-.el-header{
+.el-header {
   background: #333;
 }
-
 </style>

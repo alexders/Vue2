@@ -18,6 +18,7 @@ module.exports = {
                 state.currentMenu = val; //当前菜单更新为选择的菜单
                 let result = state.tabList.findIndex(item => item.name == val.name);
                 result == -1 ? state.tabList.push(val) : '';
+                
             } else {
                 state.currentMenu = null;
             }
