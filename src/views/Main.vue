@@ -4,9 +4,9 @@
     <el-container>
       <el-header><common-header></common-header></el-header>
       <common-tab></common-tab>
-      <el-mian>
+      <el-main>
         <router-view></router-view>
-      </el-mian>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -24,4 +24,7 @@ export default {
 .el-header {
   background: #333;
 }
+ .el-aside{
+   overflow: hidden;
+ }
 </style>
