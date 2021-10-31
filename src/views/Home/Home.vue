@@ -15,30 +15,50 @@
         </div>
       </el-card>
       <el-card shadow="hover" style="height: 522px; margin-top: 20px">
-        鼠标悬浮时显示
+        <el-table :data="tableData">
+          <el-table-column
+            show-overflow-tooltip
+            v-for="(val, key) in tableLabel"
+            :key="key"
+            :prop="key"
+            :label="val"
+          ></el-table-column>
+        </el-table>
       </el-card>
     </el-col>
     <el-col :span="16">
       <div class="num">
         <el-card shadow="hover" v-for="item in countData" :key="item.name">
-          <i class="icon" :class="`el-icon-${item.icon}`" :style="{background:item.color}"></i>
+          <i
+            class="icon"
+            :class="`el-icon-${item.icon}`"
+            :style="{ background: item.color }"
+          ></i>
           <div class="detail">
-            <p class="num"> ${{item.value}}</p>
-            <p class="txt">{{item.name}}</p>
+            <p class="num">${{ item.value }}</p>
+            <p class="txt">{{ item.name }}</p>
           </div>
         </el-card>
       </div>
-      <el-card shadow="hover"> <div style="height: 280px"></div> </el-card>
+      <el-card shadow="hover">
+        <echart style="height: 280px"></echart>
+      </el-card>
       <div class="graph">
-        <el-card shadow="hover"> <div style="height: 260px"></div> </el-card>
-        <el-card shadow="hover"> <div style="height: 260px"></div></el-card>
+        <el-card shadow="hover">
+          <echart style="height: 260px"></echart>
+        </el-card>
+        <el-card shadow="hover">
+          <echart style="height: 260px"></echart>
+        </el-card>
       </div>
     </el-col>
   </el-row>
 </template>
 
 <script>
+import Echart from "../../components/Echarts.vue";
 export default {
+  components: { Echart },
   data() {
     return {
       userImg: require("../../assets/img/avator.jpg"), //使用require 将图片当成模块引入，否则会被当成字符串
@@ -80,17 +100,55 @@ export default {
           color: "#5ab1ef",
         },
       ],
+      tableData: [],
+      tableLabel: {
+        name: "课程名",
+        todayBuy: "今日购买",
+        monthBuy: "本月购买",
+        totalBuy: "总共购买",
+      },
+      // 图标数据
+      echartData: {
+        order: {
+          xData: [],
+          series: [],
+        },
+        user: {
+          xData: [],
+          series: [],
+        },
+        video: {
+           series: []
+        },
+      },
     };
   },
-  mounted() {
-    this.$http.get("/home/getData").then(
-      (res) => {
-        console.log(res.data);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+  methods: {
+    getTableData() {
+      this.$http.get("/home/getData").then(
+        (res) => {
+          res = res.data;
+          this.tableData = res.data.tableData;
+          console.log(res.data);
+          //接受订单折现图数据
+          const orders=res.data.saleData;
+          this.echartData.order.xData=orders.selldata;
+          // 取出series键名
+          let keyArray=Object.keys(orders.selldata[0])
+          console.log(keyArray);
+          keyArray.forEach(key=>{
+            
+          })
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+  },
+  mounted() {},
+  created() {
+    this.getTableData();
   },
 };
 </script>
