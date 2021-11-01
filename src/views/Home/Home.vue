@@ -41,7 +41,7 @@
         </el-card>
       </div>
       <el-card shadow="hover">
-        <echart style="height: 280px"></echart>
+        <echart style="height: 280px" :chartData="echartData.order"></echart>
       </el-card>
       <div class="graph">
         <el-card shadow="hover">
@@ -132,12 +132,16 @@ export default {
           console.log(res.data);
           //接受订单折现图数据
           const orders=res.data.saleData;
-          this.echartData.order.xData=orders.selldata;
+          this.echartData.order.xData=orders.selltime;
           // 取出series键名
           let keyArray=Object.keys(orders.selldata[0])
           console.log(keyArray);
           keyArray.forEach(key=>{
-            
+            this.echartData.order.series.push({
+              name:key === 'wechat' ? '小程序' : key,
+              data:orders.selldata.map(item=>item[key]),
+              type:'line'
+            }) 
           })
         },
         (err) => {

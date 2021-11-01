@@ -2,7 +2,7 @@
   <div style="height: 100%" ref="echart">echart</div>
 </template>
 <script>
-import echarts from 'echarts';
+import * as echarts from 'echarts';
 export default {
   //父组件传来的数据
   props: {
@@ -28,6 +28,7 @@ export default {
   methods: {
     //   初始图表方法
     initChart() {
+      this.initChartData();
       if (this.echart) {
         this.echart.setOption(this.options);
       } else {
@@ -38,11 +39,21 @@ export default {
     //初始化图标数据
     initChartData() {
       if (this.isAxistChart) {
-          console.log('axistOption')
+         this.axistOption.xAxis.data=this.chartData.xData;
+         console.log(this.chartData.xData);
+         this.axistOption.series=this.chartData.series;
       } else {
           console.log('normalOption')
       }
     },
+  },
+  watch: {
+    chartData:{
+      handler:function(){
+        this.initChart()
+      },
+      deep:true,
+    }
   },
   data() {
     return {
