@@ -2,7 +2,7 @@
   <div style="height: 100%" ref="echart">echart</div>
 </template>
 <script>
-import * as echarts from 'echarts';
+import * as echarts from "echarts";
 export default {
   //父组件传来的数据
   props: {
@@ -39,27 +39,31 @@ export default {
     //初始化图标数据
     initChartData() {
       if (this.isAxistChart) {
-         this.axistOption.xAxis.data=this.chartData.xData;
-         console.log(this.chartData.xData);
-         this.axistOption.series=this.chartData.series;
+        this.axistOption.xAxis.data = this.chartData.xData;
+        console.log(this.chartData.xData);
+        this.axistOption.series = this.chartData.series;
       } else {
-         this.normalOption.series=this.chartData.series;
-         console.log(this.chartData.series)
+        this.normalOption.series = this.chartData.series;
+        console.log(this.chartData.series);
       }
     },
   },
   watch: {
-    chartData:{
-      handler:function(){
-        this.initChart()
+    chartData: {
+      handler: function () {
+        this.initChart();
       },
-      deep:true,
-    }
+      deep: true,
+    },
   },
   data() {
     return {
       echart: null,
       axistOption: {
+        tooltip: {
+          trigger: "axis",
+          confine: "true",
+        },
         //   有坐标
         xAxis: {
           type: "category",
@@ -69,9 +73,18 @@ export default {
           type: "value",
         },
         series: [],
+        legend: {
+          textStyle: {
+            color: "#333",
+          },
+        },
       },
       //无坐标轴
       normalOption: {
+        tooltip: {
+          trigger: "item",
+          confine: "true",
+        },
         series: [],
       },
     };
