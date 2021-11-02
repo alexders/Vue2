@@ -43,7 +43,8 @@ export default {
          console.log(this.chartData.xData);
          this.axistOption.series=this.chartData.series;
       } else {
-          console.log('normalOption')
+         this.normalOption.series=this.chartData.series;
+         console.log(this.chartData.series)
       }
     },
   },

@@ -45,10 +45,10 @@
       </el-card>
       <div class="graph">
         <el-card shadow="hover">
-          <echart style="height: 260px"></echart>
+          <echart style="height: 260px" :chartData="echartData.user"></echart>
         </el-card>
         <el-card shadow="hover">
-          <echart style="height: 260px"></echart>
+          <echart style="height: 260px" :chartData="echartData.video" :isAxistChart="false"></echart>
         </el-card>
       </div>
     </el-col>
@@ -118,7 +118,7 @@ export default {
           series: [],
         },
         video: {
-           series: []
+          series: [],
         },
       },
     };
@@ -131,18 +131,48 @@ export default {
           this.tableData = res.data.tableData;
           console.log(res.data);
           //接受订单折现图数据
-          const orders=res.data.saleData;
-          this.echartData.order.xData=orders.selltime;
+          const orders = res.data.saleData;
+          this.echartData.order.xData = orders.selltime;
           // 取出series键名
-          let keyArray=Object.keys(orders.selldata[0])
-          console.log(keyArray);
-          keyArray.forEach(key=>{
+          let keyArray = Object.keys(orders.selldata[0]);
+          // console.log(keyArray);
+          keyArray.forEach((key) => {
             this.echartData.order.series.push({
-              name:key === 'wechat' ? '小程序' : key,
-              data:orders.selldata.map(item=>item[key]),
-              type:'line'
-            }) 
-          })
+              name: key === "wechat" ? "小程序" : key,
+              data: orders.selldata.map((item) => item[key]),
+              type: "line",
+            });
+          });
+          //处理柱状图数据
+          const users = res.data.userData;
+          this.echartData.user.xData = users.time;
+          let userArray = Object.keys(users.num[0]);
+          userArray.forEach((key) => {
+            this.echartData.user.series.push({
+              name: key,
+              data: users.num.map((item) => item[key]),
+              type: "bar",
+            });
+          });
+          //处理饼图数据
+          const videos = res.data.videoData;
+          let videoArray = Object.keys(videos[0]);
+          console.log(videos);
+          videoArray.forEach((key) => {
+            this.echartData.video.series.push({
+              name: key,
+              data: videos,
+              type: "pie",
+              radius:'50%',
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: "rgba(0, 0, 0, 0.5)",
+                },
+              },
+            });
+          });
         },
         (err) => {
           console.log(err);
