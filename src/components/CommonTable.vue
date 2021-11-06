@@ -1,6 +1,6 @@
 <template>
   <div class="common-table">
-    <el-table :data="tableData" height="90%" stripe>
+    <el-table :data="tableData" height="90%" stripe v-loading="config.loading" >
       <el-table-column label="序号" width="85">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{
