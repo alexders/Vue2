@@ -27,4 +27,7 @@ export default {
  .el-aside{
    overflow: hidden;
  }
+ .el-main{
+   padding-top: 0px;
+ }
 </style>
