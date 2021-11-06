@@ -46,7 +46,7 @@ export default {
           label: "出生日期 ",
         },
         {
-          prop: "address",
+          prop: "addr",
           label: "地址",
         },
       ],

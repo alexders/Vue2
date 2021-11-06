@@ -19,19 +19,22 @@
           <span style="margin-left: 10px">{{ scope.row[item.prop] }}</span>
         </template>
       </el-table-column>
-         <el-table-column label="操作">
-      <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.row)">编辑</el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.row)">删除</el-button>
-      </template>
-    </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row)"
+            >删除</el-button
+          >
+        </template>
+      </el-table-column>
     </el-table>
-    <el-pagination layout="prev, pager, next" :total="config.total" :current-page.sync="config.page" class="pagination"> </el-pagination>
+    <el-pagination
+      layout="prev, pager, next"
+      :total="config.total"
+      :current-page.sync="config.page"
+      class="pagination"
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -43,12 +46,8 @@ export default {
     config: Object,
   },
   methods: {
-    handleEdit(){
-
-    },
-    handleDelete(){
-
-    }
+    handleEdit() {},
+    handleDelete() {},
   },
 };
 </script>
@@ -58,7 +57,7 @@ export default {
   height: calc(100% - 62px);
   background-color: #ffff;
   position: relative;
-  .pagination{
+  .pagination {
     position: absolute;
     right: 20px;
     bottom: 0px;
