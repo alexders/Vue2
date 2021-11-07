@@ -1,12 +1,33 @@
 <template>
   <div class="manage">
+    <el-dialog
+      :title="operateType === 'add' ? '新增用户' : '更新用户'"
+      :visible.sync="isShow"
+      modal-append-to-body
+    >
+      <common-form
+        :formLable="operateFormLabel"
+        :form="operateForm"
+      ></common-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="isShow = false">取 消</el-button>
+        <el-button type="primary" @click="confirm">确 定</el-button>
+      </div>
+    </el-dialog>
     <div class="manage-header">
       <el-button type="primary" class="add">+ 新增</el-button>
       <common-form inline :formLable="formLable" :form="searchForm">
         <el-button type="primary">搜索</el-button>
       </common-form>
     </div>
-   <common-table :tableData="tableData" :tableLabel="tableLabel" :config="config" @changePage="getList"></common-table>
+    <common-table
+      :tableData="tableData"
+      :tableLabel="tableLabel"
+      :config="config"
+      @changePage="getList"
+      @edit="editUser"
+      @del="delUser"
+    ></common-table>
   </div>
 </template>
 
@@ -17,6 +38,48 @@ export default {
   components: { CommonForm, CommonTable },
   data() {
     return {
+      isShow: false,
+      operateType: "add",
+      operateForm: {
+        name: "",
+        addr: "",
+        birth: "",
+        sex: "",
+      },
+      operateFormLabel: [
+        {
+          model: "name",
+          label: "姓名",
+        },
+        {
+          model: "age",
+          label: "年龄",
+        },
+        {
+          model: "sex",
+          label: "性别",
+          type: "select",
+          options: [
+            {
+              label: "男",
+              value: 1,
+            },
+            {
+              label: "女",
+              value: 0,
+            },
+          ],
+        },
+        {
+          model: "birth",
+          label: "出生日期",
+          type:'date'
+        },
+        {
+          model: "addr",
+          label: "地址",
+        },
+      ],
       searchForm: {
         keyWords: "",
       },
@@ -51,35 +114,88 @@ export default {
         },
       ],
       config: {
-        page:1,
-        total:30,
-        loading:false,
-      }
+        page: 1,
+        total: 30,
+        loading: false,
+      },
     };
   },
   methods: {
-    getList(){
+    getList() {
       // 列表加载
-      this.config.loading=true;
+      this.config.loading = true;
       // 发送请求
-      this.$http.get('/api/user/getUser',{
-        params:{
-          page:this.config.page,
-        }
-      }).then(
-        res=>{
-          this.tableData=res.data.list.map(item=>{
-            item.sexLabel= item.sex===0 ?'女':'男'
-            return item;
-          })
-          this.config.total=res.data.count;
-          this.config.loading=false;
-        },
-        err=>{
-          console.log(err)
-        },
-      )
-    }
+      this.$http
+        .get("/api/user/getUser", {
+          params: {
+            page: this.config.page,
+          },
+        })
+        .then(
+          (res) => {
+            this.tableData = res.data.list.map((item) => {
+              item.sexLabel = item.sex === 0 ? "女" : "男";
+              return item;
+            });
+            this.config.total = res.data.count;
+            this.config.loading = false;
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+    },
+    editUser(row) {
+      this.operateType = "edit";
+      this.isShow = true;
+      this.operateForm = row;
+      console.log(row);
+    },
+    confirm() {
+      // 编辑用户请求
+      if (this.operateType === "edit") {
+        this.$http.post("/api/user/edit", this.operateForm).then(
+          (res) => {
+            console.log(res.data);
+            this.isShow = false;
+            this.getList();
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      }
+    },
+    delUser(row) {
+      this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          let id = row.id;
+          this.$http
+            .get("/api/user/del", {
+              params: {
+                id,
+              },
+            })
+            .then((res) => {
+              console.log(res.data);
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+              this.getList();
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
   },
   mounted() {
     this.getList();

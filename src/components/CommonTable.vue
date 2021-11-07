@@ -47,8 +47,12 @@ export default {
     config: Object,
   },
   methods: {
-    handleEdit() {},
-    handleDelete() {},
+    handleEdit(row) {
+      this.$emit('edit', row);
+    },
+    handleDelete(row) {
+       this.$emit('del', row);
+    },
     changePage(page){
       this.$emit('changePage', page);
     }
