@@ -32,6 +32,7 @@
       layout="prev, pager, next"
       :total="config.total"
       :current-page.sync="config.page"
+      @current-change="changePage"
       class="pagination"
     >
     </el-pagination>
@@ -48,6 +49,9 @@ export default {
   methods: {
     handleEdit() {},
     handleDelete() {},
+    changePage(page){
+      this.$emit('changePage', page);
+    }
   },
 };
 </script>

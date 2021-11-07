@@ -6,7 +6,7 @@
         <el-button type="primary">搜索</el-button>
       </common-form>
     </div>
-   <common-table :tableData="tableData" :tableLabel="tableLabel" :config="config"></common-table>
+   <common-table :tableData="tableData" :tableLabel="tableLabel" :config="config" @changePage="getList"></common-table>
   </div>
 </template>
 
@@ -61,6 +61,7 @@ export default {
     getList(){
       // 列表加载
       this.config.loading=true;
+      // 发送请求
       this.$http.get('/api/user/getUser',{
         params:{
           page:this.config.page,
