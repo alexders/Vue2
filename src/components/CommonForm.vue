@@ -4,7 +4,7 @@
   <el-form-item v-for="item in formLable" :key="item.model" :label="item.label"  >
     <!--form[item.model]类似于  -->
 
-  <el-input  v-model="form[item.model]" :placeholder="'请输入'+item.label" v-if=" !item.type "></el-input>
+  <el-input  v-model="form[item.model]" :placeholder="'请输入'+item.label" v-if=" !item.type " ></el-input>
 
    <el-select v-model="form[item.model]" placeholder="请选择"  v-if="item.type === 'select'">
 
@@ -43,6 +43,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang='scss' scoped>
+.el-input{
+  width: 90%;
+}
 </style>
